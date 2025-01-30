@@ -23,7 +23,7 @@ pip install yfinance pandas numpy scipy openpyxl alpaca-trade-api requests beaut
 ```
 
 ### API Beállítások
-A szkript futtatásához **Alpaca API kulcs** és **titkos kulcs** szükséges a tőzsdei adatok eléréséhez. Frissítsd a következő sorokat a `main.py` fájlban a saját adataiddal:
+A szkript futtatásához **Alpaca API kulcs** és a **Secret Key** szükséges a tőzsdei adatok eléréséhez. Frissítsd a következő sorokat a `main.py` fájlban a saját adataiddal:
 
 ```python
 ALPACA_API_KEY = "YOUR_ALPACA_API_KEY"
