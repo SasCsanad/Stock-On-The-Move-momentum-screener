@@ -40,9 +40,9 @@ python main.py
 
 ### Kimenet
 - A szkript egy **Excel fájlt (`momentum_strategy_output.xlsx`)** hoz létre, amely három munkalapot tartalmaz:
-  1. **Filter** – A szűrési kritériumok alapján kiválasztott részvények listája.
-  2. **Database** – Az összes elemzett részvény számítási eredményei.
-  3. **Error** – Azok a részvények, amelyeknél az adatok hiányosak vagy nem voltak elérhetők.
+    - **Filter** – A szűrési kritériumok alapján kiválasztott részvények listája.
+    - **Database** – Az összes elemzett részvény számítási eredményei.
+    - **Error** – Azok a részvények, amelyeknél az adatok hiányosak vagy nem voltak elérhetők.
 
 ## Szűrési Kritériumok (*Stocks on the Move* alapján)
 A részvények kiválasztása az alábbi feltételeken alapul:
