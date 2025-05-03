@@ -16,7 +16,6 @@ ALPACA_API_KEY = "PKEUE2RW2GRN346BC03T"
 ALPACA_SECRET_KEY = "IUQsCnGkOBtrXKeoYl7Z2BDmSIWbEWtTkLI87NRP"
 ALPACA_BASE_URL = "https://paper-api.alpaca.markets"
 
-# Alpaca API inicializálása
 alpaca = REST(ALPACA_API_KEY, ALPACA_SECRET_KEY, base_url=ALPACA_BASE_URL)
 
 # Hibák gyűjtése
@@ -33,7 +32,6 @@ def fetch_sp500_tickers():
         response = requests.get(url, headers=headers)
         df = pd.read_html(StringIO(response.text))[0]
 
-        # Tisztítjuk és rendezzük az adatokat súlyozás szerint
         df['Weight'] = df['Weight'].str.rstrip('%').astype(float)
         df = df.sort_values('Weight', ascending=False)
         tickers = df['Symbol'].tolist()
@@ -85,10 +83,8 @@ def calculate_exponential_regression(data, days=90):
 
 
 def fetch_stock_data(ticker, start_date, end_date):
-    # Ticker formátum korrigálása
     alpaca_ticker = ticker.replace('.', '-')
 
-    # Alpaca próbálkozás először
     try:
         time.sleep(0.1)  # Rate limiting elkerülése
         yesterday = end_date - timedelta(days=2)
@@ -149,19 +145,16 @@ def create_excel_file(sp500_data, stock_data):
         database_sheet = wb.create_sheet("Database")
         error_sheet = wb.create_sheet("Error")
 
-        # Fejlécek beállítása
         filter_headers = ["S&P 500 > 200 MA", "Ticker", "Regression * R-squared",
                         "Market Cap", "Above 100 MA", "15% Gap"]
         database_headers = ["Ticker", "90-day Annualized Exp Regression",
                             "R-squared", "Regression * R-squared", "Close"]
 
-        # Fejlécek feltöltése
         for col, header in enumerate(filter_headers, start=1):
             filter_sheet.cell(row=1, column=col, value=header)
         for col, header in enumerate(database_headers, start=1):
             database_sheet.cell(row=1, column=col, value=header)
 
-        # S&P 500 200 napos MA ellenőrzése
         ma_condition = sp500_data['Close'].iloc[-1] > sp500_data['Close'].rolling(window=200).mean().iloc[-1]
         filter_sheet['A2'] = "YES" if ma_condition.item() else "NO"
         filter_sheet['A2'].fill = PatternFill(
@@ -169,7 +162,6 @@ def create_excel_file(sp500_data, stock_data):
             fill_type="solid"
         )
 
-        # Részvények rendezése és feltöltése
         sorted_stocks = sorted(
             stock_data.items(),
             key=lambda x: x[1]['reg'] * x[1]['r_squared'],
@@ -177,14 +169,12 @@ def create_excel_file(sp500_data, stock_data):
         )
 
         for row, (ticker, data) in enumerate(sorted_stocks, start=2):
-            # Database munkalap feltöltése
             database_sheet.cell(row=row, column=1, value=ticker)
             database_sheet.cell(row=row, column=2, value=data['reg'])
             database_sheet.cell(row=row, column=3, value=data['r_squared'])
             database_sheet.cell(row=row, column=4, value=data['reg'] * data['r_squared'])
             database_sheet.cell(row=row, column=5, value=data['close'])
 
-            # Filter munkalap feltöltése
             filter_sheet.cell(row=row, column=2, value=ticker)
             filter_sheet.cell(row=row, column=3, value=data['reg'] * data['r_squared'])
             filter_sheet.cell(row=row, column=4, value=data['market_cap'])
@@ -203,7 +193,7 @@ def create_excel_file(sp500_data, stock_data):
                 fill_type="solid"
             )
 
-        # Error munkalap feltöltése
+
         error_sheet.append(["Ticker", "Hibaüzenet"])
         for error in errors:
             error_sheet.append(error)
@@ -223,7 +213,7 @@ def main():
         sp500_tickers = fetch_sp500_tickers()
 
         end_date = datetime.now(timezone.utc)
-        start_date = end_date - timedelta(days=180)  # 6 hónapnyi adat
+        start_date = end_date - timedelta(days=180)
 
         stock_data = {}
         total_tickers = len(sp500_tickers)
