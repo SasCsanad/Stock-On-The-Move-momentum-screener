@@ -12,9 +12,9 @@ from io import StringIO
 import time
 
 # Alpaca API konfigurációja
-ALPACA_API_KEY = "PKEUE2RW2GRN346BC03T"
-ALPACA_SECRET_KEY = "IUQsCnGkOBtrXKeoYl7Z2BDmSIWbEWtTkLI87NRP"
-ALPACA_BASE_URL = "https://paper-api.alpaca.markets"
+ALPACA_API_KEY = ""
+ALPACA_SECRET_KEY = ""
+ALPACA_BASE_URL = ""
 
 alpaca = REST(ALPACA_API_KEY, ALPACA_SECRET_KEY, base_url=ALPACA_BASE_URL)
 
